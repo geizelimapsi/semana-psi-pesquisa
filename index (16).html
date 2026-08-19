@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana do Psicólogo - Pesquisa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #ead5c1 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(139, 111, 94, 0.15);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7d4a5f 0%, #5f3f52 100%);
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 4px solid #d4af7a;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #d4af7a;
+        }
+
+        .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            color: #d4af7a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #e8d4c8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #f0e5d8;
+            background: #faf7f2;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #8b6f5e;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #7d4a5f;
+            border-bottom-color: #d4af7a;
+            background: white;
+        }
+
+        .tab-btn:hover:not(:disabled) {
+            background: #f5f0ea;
+        }
+
+        .tab-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            color: #999;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px 30px;
+            min-height: 500px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .intro-text {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.8;
+            color: #5a5a5a;
+            margin-bottom: 30px;
+        }
+
+        .intro-text h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: #7d4a5f;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .intro-text p {
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #7d4a5f;
+            margin-bottom: 15px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #faf7f2;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .radio-option:hover,
+        .checkbox-option:hover {
+            background: #f0e5d8;
+            border-color: #d4af7a;
+        }
+
+        .radio-option input,
+        .checkbox-option input {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #7d4a5f;
+        }
+
+        .radio-option label,
+        .checkbox-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-weight: 400;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #5a5a5a;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e8d4c8;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s ease;
+            color: #5a5a5a;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #7d4a5f;
+            background: #faf7f2;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8d4c8;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            color: #5a5a5a;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #7d4a5f;
+            background: #faf7f2;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7d4a5f 0%, #5f3f52 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(125, 74, 95, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #e8d4c8;
+            color: #7d4a5f;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #d4c0b3;
+        }
+
+        .btn-link {
+            background: #d4af7a;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-link:hover {
+            background: #c9a86f;
+            transform: translateY(-2px);
+        }
+
+        .thanks-section {
+            text-align: center;
+        }
+
+        .thanks-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            color: #7d4a5f;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .thanks-section p {
+            color: #5a5a5a;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .gift-image {
+            max-width: 250px;
+            height: auto;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(139, 111, 94, 0.2);
+        }
+
+        .saved-indicator {
+            display: none;
+            color: #7d4a5f;
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .saved-indicator.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-text {
+            color: #d4af7a;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .tab-content {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                font-size: 11px;
+                padding: 12px 8px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://raw.githubusercontent.com/geizelimapsi/semana-psi-pesquisa/main/foto-geize3.jpg" alt="Geize Lima" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid #d4af7a; object-fit: cover;">
+            <h1>Semana do Psicólogo</h1>
+            <p>Sua voz importa</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab(0)" id="tab-0">Introdução</button>
+            <button class="tab-btn disabled" onclick="showTab(1)" id="tab-1">Perguntas Fechadas</button>
+            <button class="tab-btn disabled" onclick="showTab(2)" id="tab-2">Perguntas Abertas</button>
+            <button class="tab-btn disabled" onclick="showTab(3)" id="tab-3">Obrigado</button>
+        </div>
+
+        <form id="pesquisaForm">
+            <!-- ABA 1: INTRODUÇÃO -->
+            <div class="tab-content active">
+                <div class="intro-text">
+                    <h2>Semana do Psicólogo</h2>
+                    <p>Oi, psicóloga e terapeuta.</p>
+                    <p>Estamos em um momento de transição na forma como a gente trabalha. As ferramentas mudaram. Os clientes mudaram. A forma de se posicionar, também.</p>
+                    <p>Mas uma coisa continua igual: as dores reais de quem trabalha com a psicologia e terapia.</p>
+                    <p>Por isso, aproveitando o dia 27 de agosto, que é o dia do psicólogo, vou fazer a semana do psicólogo de 27 a 31 de agosto. E pra que eu saiba exatamente como atender a necessidade de vocês, o que vocês estão precisando agora, estou fazendo uma pesquisa diferente.</p>
+                    <p>Não é aquela coisa genérica de "quanto você fatura" ou "quantos clientes você tem".</p>
+                    <p>Quero saber de verdade: onde dói? O que você precisa resolver AGORA? Qual é o passo que falta? O que chegaria a tempo de mudar o jogo pra você?</p>
+                    <p>Seus insights vão orientar os produtos e soluções que estou criando especialmente para psicólogas e terapeutas como você. E como agradecimento e retribuição pelo seu tempo e honestidade, você vai receber um presente exclusivo.</p>
+                    <p>A gente acredita que a melhor forma de criar soluções é ouvindo quem realmente vive o desafio.</p>
+                    <p>Obrigada por estar aqui.</p>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn-primary" onclick="showTab(1)">Vamos →</button>
+                </div>
+            </div>
+
+            <!-- ABA 2: PERGUNTAS FECHADAS + DADOS -->
+            <div class="tab-content">
+                <div class="progress-text">ABA 2 DE 3</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Seu Nome</label>
+                        <input type="text" id="nome" name="nome" placeholder="Como você se chama?" required>
+                        <div class="saved-indicator"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp com DDD</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" required>
+                        <div class="saved-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Hoje, você trabalha principalmente como? (marque quantas for necessário)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p1_1" name="pergunta1" value="Clínica individual">
+                            <label for="p1_1">Clínica individual</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p1_2" name="pergunta1" value="Infoprodutos - vendo cursos, e-books, templates">
+                            <label for="p1_2">Infoprodutos - vendo cursos, e-books, templates</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p1_3" name="pergunta1" value="Mentorias - oriento outras psicólogas/terapeutas">
+                            <label for="p1_3">Mentorias - oriento outras psicólogas/terapeutas</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p1_4" name="pergunta1" value="Outro" onchange="toggleOutroField('outro-p1')">
+                            <label for="p1_4">Outra forma - descreva abaixo</label>
+                        </div>
+                    </div>
+                    <div id="outro-p1" style="display: none; margin-top: 12px;">
+                        <textarea id="pergunta1-outro" name="pergunta1-outro" placeholder="Descreva sua forma de atuação..."></textarea>
+                    </div>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Se você tivesse que escolher UMA coisa que mais te desespera agora em 2026, qual seria? (marque quantas for necessário)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_1" name="pergunta2" value="Preciso fazer mais dinheiro, mas não sei como">
+                            <label for="p2_1">Preciso fazer mais dinheiro, mas não sei como</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_2" name="pergunta2" value="Não sei como crescer além da clínica individual">
+                            <label for="p2_2">Não sei como crescer além da clínica individual</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_3" name="pergunta2" value="Meu Instagram não gera leads de qualidade">
+                            <label for="p2_3">Meu Instagram não gera leads de qualidade</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_4" name="pergunta2" value="Não tenho um posicionamento claro">
+                            <label for="p2_4">Não tenho um posicionamento claro</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_5" name="pergunta2" value="Falta tempo e estrutura para escalar">
+                            <label for="p2_5">Falta tempo e estrutura para escalar</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="p2_6" name="pergunta2" value="Outra" onchange="toggleOutroField('outro-p2')">
+                            <label for="p2_6">Outra</label>
+                        </div>
+                    </div>
+                    <div id="outro-p2" style="display: none; margin-top: 12px;">
+                        <textarea id="pergunta2-outro" name="pergunta2-outro" placeholder="Qual é sua maior dificuldade..."></textarea>
+                    </div>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Você estaria aberta a investir em uma solução estruturada nesse segundo semestre?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="p3_1" name="pergunta3" value="Sim, com certeza">
+                            <label for="p3_1">Sim, com certeza</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="p3_2" name="pergunta3" value="Sim, mas precisa fazer sentido financeiro">
+                            <label for="p3_2">Sim, mas precisa fazer sentido financeiro</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="p3_3" name="pergunta3" value="Talvez, preciso pensar">
+                            <label for="p3_3">Talvez, preciso pensar</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="p3_4" name="pergunta3" value="Não agora">
+                            <label for="p3_4">Não agora</label>
+                        </div>
+
+                    </div>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" onclick="showTab(0)">← Voltar</button>
+                    <button type="button" class="btn-primary" onclick="showTab(2)">Próximo →</button>
+                </div>
+            </div>
+
+            <!-- ABA 3: PERGUNTAS ABERTAS -->
+            <div class="tab-content">
+                <div class="progress-text">ABA 3 DE 3</div>
+
+                <div class="form-group">
+                    <label for="pergunta4">De todos os psicólogos e terapeutas que você conhece, qual é o desespero REAL que eles têm agora em 2026? Aquilo que eles sussurram quando ninguém tá ouvindo?</label>
+                    <textarea id="pergunta4" name="pergunta4" placeholder="Sua resposta..."></textarea>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pergunta5">Se você tivesse 1 semana de férias e voltasse com uma solução pronta na mão que mudasse o jogo, o que seria? Um produto? Um serviço? Uma estrutura de negócio? Uma ferramenta? Me descreve.</label>
+                    <textarea id="pergunta5" name="pergunta5" placeholder="Sua resposta..."></textarea>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pergunta6">Qual é aquele assunto sobre negócio, presença digital ou forma de trabalhar que você gostaria muito de entender melhor, mas ninguém nunca te ensinou de verdade?</label>
+                    <textarea id="pergunta6" name="pergunta6" placeholder="Sua resposta..."></textarea>
+                    <div class="saved-indicator"></div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn-secondary" onclick="showTab(1)">← Voltar</button>
+                    <button type="submit" class="btn-primary">Enviar Pesquisa →</button>
+                </div>
+            </div>
+
+            <!-- ABA 4: OBRIGADO -->
+            <div class="tab-content">
+                <div class="thanks-section">
+                    <h2>Obrigada! 💜</h2>
+                    <p>Suas respostas foram recebidas com sucesso e vão orientar os produtos que estou criando especialmente para você.</p>
+                    <p>Como agradecimento e retribuição, deixo abaixo um presente para você - com licença para revenda. Coloque seu nome e venda como um produto seu, com 100% do lucro pra você.</p>
+                    <img src="https://raw.githubusercontent.com/geizelimapsi/semana-psi-pesquisa/main/presente.jpeg" alt="Seu Presente" class="gift-image" style="max-width: 300px; margin: 20px 0; border-radius: 8px;">
+                    <a href="https://chk.eduzz.com/69K18GE7WO" target="_blank" class="btn-link" style="text-decoration: none; display: inline-block; background: #d4af7a; color: #5f3f52; padding: 16px 40px; font-size: 16px; margin-top: 30px; border-radius: 8px; font-weight: 600;">⬇️ Baixar Meu Presente</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyaeBQh3EaAv_vtExtBH6WVjYCrs8CEzIhPqW2MeJ0iqCke3R691Vi_vFKBxd66IZ_bcQ/exec';
+        const STORAGE_KEY = 'pesquisa_psicologo_data';
+
+        // Carregar dados salvos ao iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFormData();
+            setupAutoSave();
+            updateTabButtons();
+        });
+
+        function toggleOutroField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const fieldName = fieldId.replace('outro-', 'pergunta');
+            const checkbox = document.querySelector(`input[name="${fieldName}"][value="Outro"], input[name="${fieldName}"][value="Outra"]`);
+            if (checkbox) {
+                field.style.display = checkbox.checked ? 'block' : 'none';
+            }
+        }
+
+        function validateTab(fromIndex, toIndex) {
+            // Aba 0 (intro) - sem validação
+            if (fromIndex === 0) {
+                return true;
+            }
+            
+            // Aba 1 (fechadas) - valida intro
+            if (fromIndex === 1 && toIndex === 2) {
+                const nome = document.getElementById('nome').value.trim();
+                const whatsapp = document.getElementById('whatsapp').value.trim();
+                const p1 = document.querySelectorAll('input[name="pergunta1"]:checked').length;
+                const p2 = document.querySelectorAll('input[name="pergunta2"]:checked').length;
+                const p3 = document.querySelectorAll('input[name="pergunta3"]:checked').length;
+                
+                if (!nome || !whatsapp || p1 === 0 || p2 === 0 || p3 === 0) {
+                    alert('Por favor, preencha TODAS as perguntas antes de continuar.');
+                    return false;
+                }
+                return true;
+            }
+            
+            // Aba 2 (abertas) - valida aba 1
+            if (fromIndex === 2 && toIndex === 3) {
+                const p4 = document.getElementById('pergunta4').value.trim();
+                const p5 = document.getElementById('pergunta5').value.trim();
+                const p6 = document.getElementById('pergunta6').value.trim();
+                
+                if (!p4 || !p5 || !p6) {
+                    alert('Por favor, responda TODAS as perguntas abertas antes de continuar.');
+                    return false;
+                }
+                return true;
+            }
+            
+            return true;
+        }
+
+        function showTab(index) {
+            const currentTab = document.querySelector('.tab-content.active');
+            const currentIndex = Array.from(document.querySelectorAll('.tab-content')).indexOf(currentTab);
+            
+            // Validar antes de trocar de aba - bloqueio rigoroso
+            if (!validateTab(currentIndex, index)) {
+                return false;
+            }
+            
+            const contents = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            contents.forEach((content, i) => {
+                content.classList.toggle('active', i === index);
+            });
+            
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            updateTabButtons();
+            window.scrollTo(0, 0);
+        }
+
+        function updateTabButtons() {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const currentTab = document.querySelector('.tab-content.active');
+            const currentIndex = Array.from(document.querySelectorAll('.tab-content')).indexOf(currentTab);
+            
+            // Aba 0 - sempre pode ver
+            buttons[0].disabled = false;
+            
+            // Aba 1 - vê se aba 0 está completa
+            const nome = document.getElementById('nome').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            buttons[1].disabled = !(nome && whatsapp);
+            
+            // Aba 2 - vê se aba 1 está completa
+            const p1 = document.querySelectorAll('input[name="pergunta1"]:checked').length;
+            const p2 = document.querySelectorAll('input[name="pergunta2"]:checked').length;
+            const p3 = document.querySelectorAll('input[name="pergunta3"]:checked').length;
+            buttons[2].disabled = !(nome && whatsapp && p1 > 0 && p2 > 0 && p3 > 0);
+            
+            // Aba 3 - vê se aba 2 está completa
+            const p4 = document.getElementById('pergunta4').value.trim();
+            const p5 = document.getElementById('pergunta5').value.trim();
+            const p6 = document.getElementById('pergunta6').value.trim();
+            buttons[3].disabled = !(p1 > 0 && p2 > 0 && p3 > 0 && p4 && p5 && p6);
+        }
+
+        function saveFormData() {
+            const formData = new FormData(document.getElementById('pesquisaForm'));
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            console.log('Dados salvos:', data);
+        }
+
+        function loadFormData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                for (let [key, value] of Object.entries(data)) {
+                    const element = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
+                    
+                    if (element) {
+                        if (element.type === 'radio') {
+                            document.querySelector(`input[name="${key}"][value="${value}"]`).checked = true;
+                        } else {
+                            element.value = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        function setupAutoSave() {
+            const inputs = document.querySelectorAll('input, textarea');
+            
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    saveFormData();
+                    showSavedIndicator(input);
+                    updateTabButtons();
+                });
+                
+                input.addEventListener('blur', () => {
+                    saveFormData();
+                    showSavedIndicator(input);
+                    updateTabButtons();
+                });
+                
+                input.addEventListener('input', () => {
+                    saveFormData();
+                    updateTabButtons();
+                });
+            });
+        }
+
+        function showSavedIndicator(element) {
+            const indicator = element.parentElement.querySelector('.saved-indicator');
+            if (indicator) {
+                indicator.classList.add('show');
+                indicator.textContent = '✓ Salvo';
+                
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        // Enviar para Google Sheets
+        document.getElementById('pesquisaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('🔵 Iniciando envio...');
+
+            try {
+                const data = {
+                    nome: document.getElementById('nome').value,
+                    whatsapp: document.getElementById('whatsapp').value,
+                    pergunta1: Array.from(document.querySelectorAll('input[name="pergunta1"]:checked')).map(cb => cb.value).join('; '),
+                    pergunta1_outro: document.getElementById('pergunta1-outro')?.value || '',
+                    pergunta2: Array.from(document.querySelectorAll('input[name="pergunta2"]:checked')).map(cb => cb.value).join('; '),
+                    pergunta2_outro: document.getElementById('pergunta2-outro')?.value || '',
+                    pergunta3: Array.from(document.querySelectorAll('input[name="pergunta3"]:checked')).map(cb => cb.value).join('; '),
+                    pergunta4: document.getElementById('pergunta4').value,
+                    pergunta5: document.getElementById('pergunta5').value,
+                    pergunta6: document.getElementById('pergunta6').value,
+                    timestamp: new Date().toLocaleString('pt-BR')
+                };
+
+                console.log('📊 Dados a enviar:', data);
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                console.log('✅ Resposta recebida');
+                localStorage.removeItem(STORAGE_KEY);
+                showTab(3);
+                
+            } catch (error) {
+                console.error('❌ Erro no envio:', error);
+                // Mesmo com erro, tenta ir pra página de obrigado
+                // pois o Google Apps Script pode ter recebido
+                localStorage.removeItem(STORAGE_KEY);
+                showTab(3);
+            }
+        });
+    </script>
+</body>
+</html>
